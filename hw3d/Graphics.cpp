@@ -1,16 +1,15 @@
 #include "Graphics.h"
 
-#include "WinWrap.h"
 #include <d3d11.h>
 #include <wrl.h>
-
-#include "Color.h"
 #include <assert.h>
-#include "Window.h"
-
 #include <iostream>
-#include <string>
 #include <stdio.h>
+#include <string>
+
+#include "Window.h"
+#include "Color.h"
+#include "Rect.h"
 
 #include <d3dcompiler.h>
 
@@ -168,6 +167,11 @@ void Graphics::PutPixel(int x, int y, Color c)
 void Graphics::PutPixel(int x, int y, int r, int g, int b)
 {
 	PutPixel(x, y, Color(unsigned char(r), unsigned char(g), unsigned char(b)));
+}
+
+void Graphics::DrawRectangle(const Rect& rect, Color color)
+{
+	DrawRectangle(int(rect.left), int(rect.top), int(rect.right), int(rect.bottom), color);
 }
 
 void Graphics::DrawRectangle(int x, int y, int width, int height, const Color& c)

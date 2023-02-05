@@ -5,6 +5,7 @@
 #include <wrl.h>
 
 class Color;
+class Rect;
 
 
 
@@ -29,6 +30,7 @@ class Graphics
 		void ClearBuffer(float red, float green, float blue);
 		void PutPixel(int x, int y, Color c);
 		void PutPixel(int x, int y, int r, int g, int b);
+		void DrawRectangle(const Rect& rect, Color color);
 		void DrawRectangle(int x, int y, int width, int height, const Color& c);
 		void DrawCircle(int x, int y, int radius, Color c);
 

@@ -146,10 +146,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -157,8 +158,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Brick.h" />
     <ClInclude Include="Color.h" />
-    <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="WinWrap.h" />
