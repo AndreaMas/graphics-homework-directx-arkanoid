@@ -15,6 +15,7 @@ public:
 	void DoFrame();
 	void UpdateModel();
 	void ComposeFrame();
+	void TrippinBackground();
 
 private:
 

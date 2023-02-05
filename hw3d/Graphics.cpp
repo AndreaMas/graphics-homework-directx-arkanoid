@@ -82,38 +82,106 @@ void Graphics::Initialize(HWND hWnd)
 	vp.TopLeftY = 0.0f;
 	mDeviceContext->RSSetViewports(1, &vp);
 
-	// allocate memory for sysbuffer (16-byte aligned for faster access)
+	// Allocate memory for sysbuffer (16-byte aligned for faster access)
 
 	mSysBuffer = reinterpret_cast<Color*>(
 		_aligned_malloc(sizeof(Color) * Graphics::ScreenWidth * Graphics::ScreenHeight, 16u));
 
-	// Create texture for cpu render target <---------- what's happening after this?
+	// Create texture
 
-	//D3D11_TEXTURE2D_DESC sysTexDesc;
-	//sysTexDesc.Width = Graphics::ScreenWidth;
-	//sysTexDesc.Height = Graphics::ScreenHeight;
-	//sysTexDesc.MipLevels = 1;
-	//sysTexDesc.ArraySize = 1;
-	//sysTexDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	//sysTexDesc.SampleDesc.Count = 1;
-	//sysTexDesc.SampleDesc.Quality = 0;
-	//sysTexDesc.Usage = D3D11_USAGE_DYNAMIC;
-	//sysTexDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	//sysTexDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	//sysTexDesc.MiscFlags = 0;
+	D3D11_TEXTURE2D_DESC sysTexDesc;
+	sysTexDesc.Width = Graphics::ScreenWidth;
+	sysTexDesc.Height = Graphics::ScreenHeight;
+	sysTexDesc.MipLevels = 1;
+	sysTexDesc.ArraySize = 1;
+	sysTexDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	sysTexDesc.SampleDesc.Count = 1;
+	sysTexDesc.SampleDesc.Quality = 0;
+	sysTexDesc.Usage = D3D11_USAGE_DYNAMIC;
+	sysTexDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	sysTexDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	sysTexDesc.MiscFlags = 0;
 
-	//hr = mDevice->CreateTexture2D(&sysTexDesc, nullptr, &mSysBufferTexture);
-	//assert(SUCCEEDED(hr));
+	hr = mDevice->CreateTexture2D(&sysTexDesc, nullptr, &mSysBufferTexture);
+	assert(SUCCEEDED(hr));
 
-	//// Create the resource view on the texture
+	// Create the resource view on the texture
 
-	//D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-	//srvDesc.Format = sysTexDesc.Format;
-	//srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	//srvDesc.Texture2D.MipLevels = 1;
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = sysTexDesc.Format;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
 
-	//hr = mDevice->CreateShaderResourceView(mSysBufferTexture.Get(), &srvDesc, &mSysBufferTextureView);
-	//assert(SUCCEEDED(hr));
+	hr = mDevice->CreateShaderResourceView(mSysBufferTexture.Get(), &srvDesc, &mSysBufferTextureView);
+	assert(SUCCEEDED(hr));
+
+	// Create pixel shader
+
+	ComPtr<ID3DBlob> pBlob;
+	hr = D3DReadFileToBlob(L"PixelShaderOne.cso", &pBlob);
+	assert(SUCCEEDED(hr));
+	hr = mDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &mPixelShader);
+	assert(SUCCEEDED(hr));
+
+	// Create vertex shader
+
+	hr = D3DReadFileToBlob(L"VertexShaderOne.cso", &pBlob);
+	assert(SUCCEEDED(hr));
+	hr = mDevice->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &mVertexShader);
+	assert(SUCCEEDED(hr));
+
+	// create and fill vertex buffer with quad for rendering frame
+
+	const FSQVertex vertices[] =
+	{
+		{ -1.0f,1.0f,0.5f,0.0f,0.0f },
+		{ 1.0f,1.0f,0.5f,1.0f,0.0f },
+		{ 1.0f,-1.0f,0.5f,1.0f,1.0f },
+		{ -1.0f,1.0f,0.5f,0.0f,0.0f },
+		{ 1.0f,-1.0f,0.5f,1.0f,1.0f },
+		{ -1.0f,-1.0f,0.5f,0.0f,1.0f },
+	};
+
+	D3D11_BUFFER_DESC bd = {};
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = sizeof(FSQVertex) * 6;
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bd.CPUAccessFlags = 0u;
+	D3D11_SUBRESOURCE_DATA initData = {};
+	initData.pSysMem = vertices;
+
+	hr = mDevice->CreateBuffer(&bd, &initData, &mVertexBuffer);
+	assert(SUCCEEDED(hr));
+
+	// create input layout for full screen quad
+
+	const D3D11_INPUT_ELEMENT_DESC ied[] =
+	{
+		{ "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 }
+	};
+
+	hr = mDevice->CreateInputLayout(
+		ied,
+		(UINT)std::size(ied),
+		pBlob->GetBufferPointer(),
+		pBlob->GetBufferSize(),
+		&mInputLayout);
+	assert(SUCCEEDED(hr));
+
+	// Create sampler state for full screen textured quad
+
+	D3D11_SAMPLER_DESC sampDesc = {};
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	sampDesc.MinLOD = 0;
+	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	hr = mDevice->CreateSamplerState(&sampDesc, &mSamplerState);
+	assert(SUCCEEDED(hr));
 
 }
 
@@ -147,9 +215,46 @@ void Graphics::BeginFrame()
 
 void Graphics::EndFrame()
 {
+	// lock and map the adapter memory for copying over the sysbuffer
+
+	HRESULT hr = mDeviceContext->Map(mSysBufferTexture.Get(), 0u,
+		D3D11_MAP_WRITE_DISCARD, 0u, &mappedSysBufferTexture);
+	assert(SUCCEEDED(hr));
+
+	// setup parameters for copy operation
+
+	Color* pDst = reinterpret_cast<Color*>(mappedSysBufferTexture.pData);
+	const size_t dstPitch = mappedSysBufferTexture.RowPitch / sizeof(Color);
+	const size_t srcPitch = Graphics::ScreenWidth;
+	const size_t rowBytes = srcPitch * sizeof(Color);
+
+	// perform the copy line-by-line
+
+	for (size_t y = 0u; y < Graphics::ScreenHeight; y++)
+	{
+		memcpy(&pDst[y * dstPitch], &mSysBuffer[y * srcPitch], rowBytes);
+	}
+
+	// release the adapter memory
+
+	mDeviceContext->Unmap(mSysBufferTexture.Get(), 0u);
+
+	// render offscreen scene texture to back buffer
+
+	mDeviceContext->IASetInputLayout(mInputLayout.Get());
+	mDeviceContext->VSSetShader(mVertexShader.Get(), nullptr, 0u);
+	mDeviceContext->PSSetShader(mPixelShader.Get(), nullptr, 0u);
+	mDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	const UINT stride = sizeof(FSQVertex);
+	const UINT offset = 0u;
+	mDeviceContext->IASetVertexBuffers(0u, 1u, mVertexBuffer.GetAddressOf(), &stride, &offset);
+	mDeviceContext->PSSetShaderResources(0u, 1u, mSysBufferTextureView.GetAddressOf());
+	mDeviceContext->PSSetSamplers(0u, 1u, mSamplerState.GetAddressOf());
+	mDeviceContext->Draw(6u, 0u);
+
 	// flip back/front buffers
 
-	HRESULT hr = mSwapChain->Present(1u, 0u);
+	hr = mSwapChain->Present(1u, 0u);
 	assert(SUCCEEDED(hr));
 }
 
@@ -171,7 +276,7 @@ void Graphics::PutPixel(int x, int y, int r, int g, int b)
 
 void Graphics::DrawRectangle(const Rect& rect, Color color)
 {
-	DrawRectangle(int(rect.left), int(rect.top), int(rect.right), int(rect.bottom), color);
+	DrawRectangleWithVerts(int(rect.left), int(rect.top), int(rect.right), int(rect.bottom), color);
 }
 
 void Graphics::DrawRectangle(int x, int y, int width, int height, const Color& c)
@@ -181,6 +286,26 @@ void Graphics::DrawRectangle(int x, int y, int width, int height, const Color& c
 		for (int ix = x; ix < width; ++ix)
 		{
 			PutPixel(ix, iy, c);
+		}
+	}
+}
+
+void Graphics::DrawRectangleWithVerts(int x0, int y0, int x1, int y1, Color c)
+{
+	if (x0 > x1)
+	{
+		std::swap(x0, x1);
+	}
+	if (y0 > y1)
+	{
+		std::swap(y0, y1);
+	}
+
+	for (int y = y0; y < y1; ++y)
+	{
+		for (int x = x0; x < x1; ++x)
+		{
+			PutPixel(x, y, c);
 		}
 	}
 }

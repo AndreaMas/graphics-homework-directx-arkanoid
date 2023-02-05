@@ -18,6 +18,14 @@ class Graphics
 			float y;
 		};
 
+private:
+
+	struct FSQVertex // vertex format for the framebuffer
+	{
+		float x, y, z;		// position
+		float u, v;			// texcoords
+	};
+
 	public:
 
 		Graphics() = default;
@@ -32,11 +40,12 @@ class Graphics
 		void PutPixel(int x, int y, int r, int g, int b);
 		void DrawRectangle(const Rect& rect, Color color);
 		void DrawRectangle(int x, int y, int width, int height, const Color& c);
+		void DrawRectangleWithVerts(int x0, int y0, int x1, int y1, Color c); // TODO: find better sign
 		void DrawCircle(int x, int y, int radius, Color c);
 
 	public:
 
-		static const int ScreenWidth = 800; // TODO: use these or window's ones?
+		static const int ScreenWidth = 800; // TODO: check further wrt windows W&H
 		static const int ScreenHeight = 800;
 
 	private:
