@@ -39,14 +39,6 @@ class Graphics
 
 	private:
 
-		struct FSQVertex // full-screen textured quad, vertex format
-		{
-			float x, y, z;		// position
-			float u, v;			// texture coordinates
-		};
-
-	private:
-
 		Microsoft::WRL::ComPtr <ID3D11Device> mDevice = nullptr;                           // device:             used for creating and managing DirectX resources
 		Microsoft::WRL::ComPtr <ID3D11DeviceContext> mDeviceContext = nullptr;             // device context:     used to send commands to GPU 
 		Microsoft::WRL::ComPtr <IDXGISwapChain> mSwapChain = nullptr;                      // swap chain:         collection of buffers, used for displaying images on screen

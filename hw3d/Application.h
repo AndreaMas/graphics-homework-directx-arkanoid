@@ -12,8 +12,9 @@ public:
 	Application(Window& wnd);
 
 	int Run();
-	void GameLogic();
 	void DoFrame();
+	void UpdateModel();
+	void ComposeFrame();
 
 private:
 
