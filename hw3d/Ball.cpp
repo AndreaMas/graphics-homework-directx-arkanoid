@@ -5,9 +5,9 @@
 
 Ball::Ball(const Vector2& pos, const Vector2& dir):
 	mPos(pos),
-	mDir(dir)
+	mDir(dir),
+	mColor(255,255,255)
 {
-	UpdateVelocity();
 }
 
 void Ball::Draw(Graphics& gfx) const
@@ -22,7 +22,7 @@ void Ball::Draw(Graphics& gfx) const
 
 void Ball::Update(float dt)
 {
-	mPos += mDir * dt;
+	mPos += mDir* mSpeed * dt;
 }
 
 void Ball::BounceX()
@@ -37,7 +37,7 @@ void Ball::BounceY()
 
 Rect Ball::GetRect() const
 {
-	return Rect::FromCenter(mDir, mRadius, mRadius);
+	return Rect::FromCenter(mPos, mRadius, mRadius);
 }
 
 Vector2 Ball::Dir() const
@@ -52,7 +52,7 @@ Vector2 Ball::Pos() const
 
 Vector2 Ball::Vel() const
 {
-	return mVel;
+	return mDir * mSpeed;
 }
 
 float Ball::Radius() const
@@ -70,9 +70,9 @@ void Ball::SetDirection(const Vector2& dir)
 	mDir = dir;
 }
 
-void Ball::UpdateVelocity()
+void Ball::SetSpeed(const float speed)
 {
-	mVel = mDir.GetNormalized() * mSpeed;
+	mSpeed = speed;
 }
 
 

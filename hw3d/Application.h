@@ -4,21 +4,34 @@
 #include "Window.h"
 #include "Graphics.h"
 #include "Timer.h"
+#include <vector>
+
+#include "Ball.h"
+#include "Brick.h"
 
 class Application 
 {
-public:
+	public:
 
-	Application(Window& wnd);
+		Application(Window& wnd);
 
-	int Run();
-	void DoFrame();
-	void UpdateModel();
-	void ComposeFrame();
-	void TrippinBackground();
+		int Run();
+		void DoFrame();
+		void UpdateModel();
+		void ComposeFrame();
 
-private:
+		void TrippinBackground();
 
-	Window& mWindow;
-	Timer mTimer;
+		void SetBricksInGrid(std::vector<Brick>& bricks);
+		void SetBallInPosition(Ball& ball);
+
+	private:
+
+		const float resetGameTime = 1.0f;
+
+		Window& mWindow;
+		Timer mTimer;
+
+		Ball mBall;
+		std::vector<Brick> mBricks;
 };

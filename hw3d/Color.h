@@ -2,28 +2,28 @@
 
 class Color
 {
-public:
+	public:
 
-	unsigned int mColorValue;
+		unsigned int mColorValue;
 
-public:
+	public:
 
-	Color() = default;
-	Color(const Color& color);
-	Color(unsigned int colorVal);
-	Color(unsigned char a, unsigned char r, unsigned char g, unsigned char b);
-	Color(unsigned char r, unsigned char g, unsigned char b);
-	Color(Color color, unsigned char a);
-	Color& operator = (Color color);
+		Color() = default;
+		Color(const Color& color);
+		Color(unsigned int colorVal);
+		Color(unsigned char a, unsigned char r, unsigned char g, unsigned char b);
+		Color(unsigned char r, unsigned char g, unsigned char b);
+		Color(Color color, unsigned char a);
+		Color& operator = (Color color);
 
-	unsigned char GetA() const;
-	unsigned char GetR() const;
-	unsigned char GetG() const;
-	unsigned char GetB() const;
-	void SetA(unsigned char a);
-	void SetR(unsigned char r);
-	void SetG(unsigned char g);
-	void SetB(unsigned char b);
+		unsigned char GetA() const;
+		unsigned char GetR() const;
+		unsigned char GetG() const;
+		unsigned char GetB() const;
+		void SetA(unsigned char a);
+		void SetR(unsigned char r);
+		void SetG(unsigned char g);
+		void SetB(unsigned char b);
 };
 
 namespace Colors

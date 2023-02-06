@@ -6,8 +6,12 @@
 #include "Ball.h"
 
 Application::Application(Window& wnd):
-	mWindow(wnd)
-{ }
+	mWindow(wnd),
+	mBall(Vector2(Graphics::ScreenWidth / 2, Graphics::ScreenHeight * 6 / 8), Vector2(100.f,100.f))
+{
+	//mBall.SetPosition( Vector2 ( Graphics::ScreenWidth / 2, Graphics::ScreenHeight * 6 / 8) );
+
+}
 
 int Application::Run() {
 
@@ -33,14 +37,18 @@ void Application::DoFrame()
 
 void Application::UpdateModel()
 {
+	const float dt = mTimer.Mark();
 }
 
 void Application::ComposeFrame()
 {
-	Brick brick1(Rect(40.0f, 100.0f, 40.0f, 60.0f), Colors::Yellow);
-	brick1.Draw(mWindow.gfx);
-	Ball ball(Vector2(40.0f, 80.0f), Vector2(40.0f, 80.0f));
-	ball.Draw(mWindow.gfx);
+	SetBricksInGrid(mBricks);
+	// SetPaddleInPosition(mPaddle);
+
+	mBall.Draw(mWindow.gfx);
+	for(const Brick& brick : mBricks) {
+		brick.Draw(mWindow.gfx);
+	}
 }
 
 void Application::TrippinBackground() {
@@ -49,4 +57,41 @@ void Application::TrippinBackground() {
 	mWindow.gfx.ClearBuffer(red, green, 1.0f);
 	//mWindow.gfx.DrawTriangleTest();
 	//mWindow.gfx.EndFrame();
+}
+
+void Application::SetBallInPosition(Ball& ball)
+{
+
+	
+}
+
+void Application::SetBricksInGrid(std::vector<Brick>& bricks)
+{
+	const int numBricksPerRow = 8;
+	const int numBricksPerCol = 4;
+
+	const int firstBrickRowScreenHeight = Graphics::ScreenHeight / 8;
+	const int PaddleScreenHeight = Graphics::ScreenHeight * 2 / 8;
+
+	const float spaceBetwBricks = 5.0f;
+
+	const float brickWidth = (Graphics::ScreenWidth / (numBricksPerRow + 1)) - ( spaceBetwBricks );
+	const float brickHeight = 35.0f;
+
+	float posScreenHeight = firstBrickRowScreenHeight;
+
+	for (int i = 0; i < numBricksPerCol; i++) {
+
+		for (int j = 1; j < numBricksPerRow + 1; j++) {
+
+			float posScreenWidth = Graphics::ScreenHeight * j / ( numBricksPerRow + 1 );
+
+			Brick b(Rect::FromCenter(Vector2(posScreenWidth, posScreenHeight), brickWidth/2, brickHeight/2), Colors::Yellow);
+			bricks.push_back(b);
+
+			
+		}
+
+		posScreenHeight += brickHeight + spaceBetwBricks;
+	}
 }

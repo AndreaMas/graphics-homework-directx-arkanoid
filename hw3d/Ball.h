@@ -26,7 +26,7 @@ class Ball
 
 		void SetPosition(const Vector2& pos); // Setters
 		void SetDirection(const Vector2& dir);
-		void UpdateVelocity();
+		void SetSpeed(const float speed);
 
 		void Draw(Graphics& gfx) const; 
 		void Update(float dt);
@@ -39,10 +39,9 @@ class Ball
 	private:
 
 		const float mRadius = 10.0f;
-		const float mSpeed = 300.0f;
+		float mSpeed = 300.0f;
 		Vector2 mPos;
 		Vector2 mDir;
-		Vector2 mVel;
 		Color mColor;
 };
 
