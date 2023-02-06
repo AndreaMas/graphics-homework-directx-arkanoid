@@ -11,7 +11,7 @@ public:
 	void Draw(Graphics& gfx) const;
 	Vector2 GetCenter() const;
 private:
-	Rect mRect;
+	Rect mRect; // implicit position
 	Color mColor;
 	bool mIsDestroyed = true;
 };

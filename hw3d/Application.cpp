@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include "Rect.h"
 #include "Brick.h"
+#include "Ball.h"
 
 Application::Application(Window& wnd):
 	mWindow(wnd)
@@ -36,8 +37,10 @@ void Application::UpdateModel()
 
 void Application::ComposeFrame()
 {
-	Brick b1(Rect(40.0f, 100.0f, 40.0f, 60.0f), Color(255,255,255,255));
-	b1.Draw(mWindow.gfx);
+	Brick brick1(Rect(40.0f, 100.0f, 40.0f, 60.0f), Colors::Yellow);
+	brick1.Draw(mWindow.gfx);
+	Ball ball(Vector2(40.0f, 80.0f), Vector2(40.0f, 80.0f));
+	ball.Draw(mWindow.gfx);
 }
 
 void Application::TrippinBackground() {
