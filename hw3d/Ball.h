@@ -42,6 +42,6 @@ class Ball
 		float mSpeed = 300.0f;
 		Vector2 mPos;
 		Vector2 mDir;
-		Color mColor;
+		Color mColor = Colors::White;
 };
 

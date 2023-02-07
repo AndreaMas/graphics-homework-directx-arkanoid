@@ -5,7 +5,7 @@
 
 Ball::Ball(const Vector2& pos, const Vector2& dir):
 	mPos(pos),
-	mDir(dir),
+	mDir(dir.GetNormalized()),
 	mColor(255,255,255)
 {
 }
@@ -13,8 +13,8 @@ Ball::Ball(const Vector2& pos, const Vector2& dir):
 void Ball::Draw(Graphics& gfx) const
 {
 	gfx.DrawCircle(
-		GetRect().GetCenter().x,
-		GetRect().GetCenter().y,
+		mPos.x,
+		mPos.y,
 		mRadius,
 		mColor
 		);
@@ -22,7 +22,7 @@ void Ball::Draw(Graphics& gfx) const
 
 void Ball::Update(float dt)
 {
-	mPos += mDir* mSpeed * dt;
+	mPos += mDir * mSpeed * dt;
 }
 
 void Ball::BounceX()
