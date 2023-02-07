@@ -38,6 +38,7 @@ void Application::DoFrame()
 void Application::UpdateModel()
 {
 	const float dt = mTimer.Mark();
+	mBall.Update(dt);
 }
 
 void Application::ComposeFrame()
