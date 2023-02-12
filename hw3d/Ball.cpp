@@ -35,6 +35,33 @@ void Ball::BounceY()
 	mDir.y = -mDir.y;
 }
 
+void Ball::DoWallCollision(const Rect& walls)
+{
+	const Rect rect = GetRect();
+
+	if (rect.left < walls.left)
+	{
+		mPos.x += walls.left - rect.left;
+		BounceX();
+	}
+	else if (rect.right > walls.right)
+	{
+		mPos.x -= rect.right - walls.right;
+		BounceX();
+	}
+
+	if (rect.top < walls.top)
+	{
+		mPos.y += walls.top - rect.top;
+		BounceY();
+	}
+	else if (rect.bottom > walls.bottom)
+	{
+		mPos.y -= rect.bottom - walls.bottom;
+		BounceY();
+	}
+}
+
 Rect Ball::GetRect() const
 {
 	return Rect::FromCenter(mPos, mRadius, mRadius);

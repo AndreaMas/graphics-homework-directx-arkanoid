@@ -269,6 +269,8 @@ void Graphics::PutPixel(int x, int y, Color c)
 	mSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
+// Very horrible solution to the graphics, with more time I'd done better ...
+
 void Graphics::PutPixel(int x, int y, int r, int g, int b)
 {
 	PutPixel(x, y, Color(unsigned char(r), unsigned char(g), unsigned char(b)));
@@ -289,26 +291,6 @@ void Graphics::DrawRectangle(int x, int y, int width, int height, const Color& c
 		}
 	}
 }
-
-//void Graphics::DrawRectangleWithVerts(int x0, int y0, int x1, int y1, Color c)
-//{
-//	if (x0 > x1)
-//	{
-//		std::swap(x0, x1);
-//	}
-//	if (y0 > y1)
-//	{
-//		std::swap(y0, y1);
-//	}
-//
-//	for (int y = y0; y < y1; ++y)
-//	{
-//		for (int x = x0; x < x1; ++x)
-//		{
-//			PutPixel(x, y, c);
-//		}
-//	}
-//}
 
 void Graphics::DrawCircle(int x, int y, int radius, Color c)
 {

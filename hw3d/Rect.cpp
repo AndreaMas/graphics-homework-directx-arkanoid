@@ -1,4 +1,5 @@
 #include "Rect.h"
+#include <algorithm>
 
 Rect::Rect(float left_in, float right_in, float top_in, float bottom_in):
 	left(left_in),
@@ -22,6 +23,14 @@ bool Rect::IsOverlappingWith(const Rect& other) const
 {
 	return right > other.left && left < other.right
 		&& bottom > other.top && top < other.bottom;
+}
+
+Rect::OverlapPosition Rect::hasOverlappedWhere(const Rect& other) 
+{
+	int i = 0;
+	int j = 1;
+	int k = std::min(i, j);
+	return OverlapPosition::DOWN;
 }
 
 bool Rect::IsContainedBy(const Rect& other) const

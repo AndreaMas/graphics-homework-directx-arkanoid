@@ -7,16 +7,18 @@
 
 Application::Application(Window& wnd):
 	mWindow(wnd),
-	mBall(Vector2(Graphics::ScreenWidth / 2, Graphics::ScreenHeight * 6 / 8), Vector2(100.f,100.f))
+	mBall(Vector2(Graphics::ScreenWidth / 2, Graphics::ScreenHeight * 6 / 8), Vector2(-10.f,-100.f))
 {
 	//mBall.SetPosition( Vector2 ( Graphics::ScreenWidth / 2, Graphics::ScreenHeight * 6 / 8) );
-
+	SetBricksInGrid(mBricks);
+	SetWalls(mWalls);
 }
 
 int Application::Run() {
 
 	while (mWindow.ProcessMessage())
 	{
+		
 		DoFrame();
 
 		//if (mWindow.kbd.KeyIsPressed(VK_SPACE)){
@@ -39,15 +41,30 @@ void Application::UpdateModel()
 {
 	const float dt = mTimer.Mark();
 	mBall.Update(dt);
+
+	for (Brick& brick : mBricks) 
+	{
+		brick.DoCollisionWithBall(mBall);
+	}
+	for (Brick& wall : mWalls)
+	{
+		wall.DoCollisionWithBall(mBall);
+	}
 }
 
 void Application::ComposeFrame()
 {
-	SetBricksInGrid(mBricks);
 	// SetPaddleInPosition(mPaddle);
 
 	mBall.Draw(mWindow.gfx);
-	for(const Brick& brick : mBricks) {
+
+	for (const Brick& wall : mWalls)
+	{
+		wall.Draw(mWindow.gfx);
+	}
+
+	for(const Brick& brick : mBricks) 
+	{
 		brick.Draw(mWindow.gfx);
 	}
 }
@@ -66,10 +83,40 @@ void Application::SetBallInPosition(Ball& ball)
 	
 }
 
+void Application::SetWalls(std::vector<Brick>& walls) 
+{
+	int sideWallWidth = 30.0f;
+	int topWallHeight = 30.0f;
+
+	// top wall
+
+	Brick topWall(Rect(Vector2(0, 0), Graphics::ScreenWidth, topWallHeight), Colors::Blue);
+	topWall.SetImmortal(true);
+	mWalls.push_back(topWall);
+
+	// temporary bottom wall
+
+	Brick bottomWall(Rect(Vector2(0, Graphics::ScreenHeight - topWallHeight), Graphics::ScreenWidth, topWallHeight), Colors::Blue);
+	bottomWall.SetImmortal(true);
+	mWalls.push_back(bottomWall);
+
+	// left wall
+
+	Brick sideLeftWall(Rect(Vector2(0, 0), sideWallWidth, Graphics::ScreenHeight), Colors::Blue);
+	sideLeftWall.SetImmortal(true);
+	mWalls.push_back(sideLeftWall);
+
+	// right wall
+
+	Brick sideRightWall(Rect(Vector2(Graphics::ScreenWidth - sideWallWidth, 0), sideWallWidth, Graphics::ScreenHeight), Colors::Blue);
+	sideRightWall.SetImmortal(true);
+	mWalls.push_back(sideRightWall);
+}
+
 void Application::SetBricksInGrid(std::vector<Brick>& bricks)
 {
-	const int numBricksPerRow = 8;
-	const int numBricksPerCol = 4;
+	const int numBricksPerRow = 5;
+	const int numBricksPerCol = 3;
 
 	const int firstBrickRowScreenHeight = Graphics::ScreenHeight / 8;
 	const int PaddleScreenHeight = Graphics::ScreenHeight * 2 / 8;

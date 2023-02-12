@@ -22,6 +22,7 @@ class Application
 
 		void TrippinBackground();
 
+		void SetWalls(std::vector<Brick>& walls);
 		void SetBricksInGrid(std::vector<Brick>& bricks);
 		void SetBallInPosition(Ball& ball);
 
@@ -34,4 +35,5 @@ class Application
 
 		Ball mBall;
 		std::vector<Brick> mBricks;
+		std::vector<Brick> mWalls;
 };

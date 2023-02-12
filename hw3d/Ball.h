@@ -10,8 +10,8 @@ class Ball
 {
 	public:
 
-		enum class CollisionType {
-
+		enum class CollisionFrom {
+			UP, DOWN, LEFT, RIGHT
 		};
 
 	public:
@@ -23,6 +23,7 @@ class Ball
 		Vector2 Pos() const;
 		Vector2 Vel() const;
 		float Radius() const;
+		Rect GetRect() const;
 
 		void SetPosition(const Vector2& pos); // Setters
 		void SetDirection(const Vector2& dir);
@@ -31,15 +32,14 @@ class Ball
 		void Draw(Graphics& gfx) const; 
 		void Update(float dt);
 
+		void DoWallCollision(const Rect& walls);
 		void BounceX();
 		void BounceY();
 
-		Rect GetRect() const;
-
 	private:
 
-		const float mRadius = 10.0f;
-		float mSpeed = 300.0f;
+		const float mRadius = 5.0f;
+		float mSpeed = 600.0f;
 		Vector2 mPos;
 		Vector2 mDir;
 		Color mColor = Colors::White;
