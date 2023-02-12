@@ -1,8 +1,6 @@
-# INCOMPLETE - Graphics homework - DirectX Arkanoid Clone
+# Graphics homework - DirectX Arkanoid Clone
 
-## NOTE: Incomplete
-
-The project is currently incomplete. Estimated time of development: 1/2 weeks tops.
+![arkanoid](https://user-images.githubusercontent.com/32450751/218325115-dca85918-1673-4b13-8ee3-fb1c02c3c379.gif)
 
 ## What is this?
 
@@ -10,7 +8,7 @@ A clone of Arkanoid made in C++ and DirectX11.
 
 ## How to run?
 
-Open the solution using Visual Studio (2022 suggested). Compile and run.
+Open the solution using Visual Studio (2022 suggested). Compile in Release and run.
 
 ## Resources
 
