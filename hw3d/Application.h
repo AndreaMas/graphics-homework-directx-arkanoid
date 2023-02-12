@@ -8,6 +8,7 @@
 
 #include "Ball.h"
 #include "Brick.h"
+#include "Paddle.h"
 
 class Application 
 {
@@ -34,6 +35,7 @@ class Application
 		Timer mTimer;
 
 		Ball mBall;
+		Paddle mPaddle;
 		std::vector<Brick> mBricks;
 		std::vector<Brick> mWalls;
 };

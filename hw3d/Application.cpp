@@ -7,7 +7,8 @@
 
 Application::Application(Window& wnd):
 	mWindow(wnd),
-	mBall(Vector2(Graphics::ScreenWidth / 2, Graphics::ScreenHeight * 6 / 8), Vector2(-10.f,-100.f))
+	mBall(Vector2(Graphics::ScreenWidth / 2, Graphics::ScreenHeight * 6 / 8), Vector2(-10.f,-100.f)),
+	mPaddle(Vector2(Graphics::ScreenWidth / 2, Graphics::ScreenHeight * 7 / 8), 80.0f, 10.0f)
 {
 	//mBall.SetPosition( Vector2 ( Graphics::ScreenWidth / 2, Graphics::ScreenHeight * 6 / 8) );
 	SetBricksInGrid(mBricks);
@@ -18,13 +19,13 @@ int Application::Run() {
 
 	while (mWindow.ProcessMessage())
 	{
-		
+		if (mWindow.kbd.KeyIsPressed(VK_SPACE)) {
+			MessageBox(nullptr, "Something Happened!", "Space Key Was Pressed", MB_OK | MB_ICONEXCLAMATION);
+		}
+
 		DoFrame();
 
-		//if (mWindow.kbd.KeyIsPressed(VK_SPACE)){
-		//	MessageBox(nullptr, "Something Happened!", "Space Key Was Pressed", MB_OK | MB_ICONEXCLAMATION);
-		//	return 0;
-		//}
+
 	}
 	return 0;
 }
@@ -40,7 +41,12 @@ void Application::DoFrame()
 void Application::UpdateModel()
 {
 	const float dt = mTimer.Mark();
+
+	mPaddle.Update(mWindow.kbd, dt);
+
 	mBall.Update(dt);
+
+	mPaddle.DoBallCollision(mBall);
 
 	for (Brick& brick : mBricks) 
 	{
@@ -54,9 +60,9 @@ void Application::UpdateModel()
 
 void Application::ComposeFrame()
 {
-	// SetPaddleInPosition(mPaddle);
-
 	mBall.Draw(mWindow.gfx);
+
+	mPaddle.Draw(mWindow.gfx);
 
 	for (const Brick& wall : mWalls)
 	{
@@ -85,8 +91,8 @@ void Application::SetBallInPosition(Ball& ball)
 
 void Application::SetWalls(std::vector<Brick>& walls) 
 {
-	int sideWallWidth = 30.0f;
-	int topWallHeight = 30.0f;
+	int sideWallWidth = 60.0f;
+	int topWallHeight = 60.0f;
 
 	// top wall
 

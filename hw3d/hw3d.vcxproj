@@ -151,6 +151,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Vector2.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Paddle.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector2.h" />

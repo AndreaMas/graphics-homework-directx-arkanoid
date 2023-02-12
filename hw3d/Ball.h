@@ -9,13 +9,7 @@ class Graphics;
 class Ball
 {
 	public:
-
-		enum class CollisionFrom {
-			UP, DOWN, LEFT, RIGHT
-		};
-
-	public:
-
+ 
 		Ball() = default;
 		Ball(const Vector2& pos, const Vector2& dir);
 
@@ -39,7 +33,7 @@ class Ball
 	private:
 
 		const float mRadius = 5.0f;
-		float mSpeed = 600.0f;
+		float mSpeed = 300.0f;
 		Vector2 mPos;
 		Vector2 mDir;
 		Color mColor = Colors::White;
