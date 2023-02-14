@@ -10,32 +10,33 @@
 #include "Brick.h"
 #include "Paddle.h"
 
-class Application 
+class Application
 {
-	public:
+    public:
 
-		Application(Window& wnd);
+        Application( Window &wnd );
 
-		int Run();
-		void DoFrame();
-		void UpdateModel();
-		void ComposeFrame();
+        int  Run();
+        void DoFrame();
+        void UpdateModel();
+        void ComposeFrame();
 
-		void TrippinBackground();
+        void TrippinBackground();
 
-		void SetWalls(std::vector<Brick>& walls);
-		void SetBricksInGrid(std::vector<Brick>& bricks);
-		void SetBallInPosition(Ball& ball);
+        void SetWalls( std::vector< Brick > &walls );
+        void SetBricksInGrid( std::vector< Brick > &bricks );
+        void SetBallInPosition( Ball &ball );
 
-	private:
+    private:
 
-		const float resetGameTime = 1.0f;
+        const float resetGameTime        = 1.0f;
+        const float ballDeathHeightTresh = Graphics::ScreenHeight - 40.0f;
 
-		Window& mWindow;
-		Timer mTimer;
+        Window &mWindow;
+        Timer   mTimer;
 
-		Ball mBall;
-		Paddle mPaddle;
-		std::vector<Brick> mBricks;
-		std::vector<Brick> mWalls;
+        Ball                 mBall;
+        Paddle               mPaddle;
+        std::vector< Brick > mBricks;
+        std::vector< Brick > mWalls;
 };

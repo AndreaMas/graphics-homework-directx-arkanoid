@@ -8,34 +8,35 @@ class Graphics;
 
 class Ball
 {
-	public:
- 
-		Ball() = default;
-		Ball(const Vector2& pos, const Vector2& dir);
+    public:
 
-		Vector2 Dir() const; // Getters
-		Vector2 Pos() const;
-		Vector2 Vel() const;
-		float Radius() const;
-		Rect GetRect() const;
+        Ball() = default;
+        Ball( const Vector2 &pos, const Vector2 &dir );
 
-		void SetPosition(const Vector2& pos); // Setters
-		void SetDirection(const Vector2& dir);
-		void SetSpeed(const float speed);
+        Vector2 Dir() const; // Getters
+        Vector2 Pos() const;
+        Vector2 Vel() const;
+        float   Radius() const;
+        Rect    GetRect() const;
 
-		void Draw(Graphics& gfx) const; 
-		void Update(float dt);
+        void SetPosition( const Vector2 &pos ); // Setters
+        void SetDirection( const Vector2 &dir );
+        void SetSpeed( const float speed );
 
-		void DoWallCollision(const Rect& walls);
-		void BounceX();
-		void BounceY();
+        void Draw( Graphics &gfx ) const;
+        void Update( float dt );
 
-	private:
+        void DoWallCollision( const Rect &walls );
+        void BounceX();
+        void BounceY();
 
-		const float mRadius = 5.0f;
-		float mSpeed = 300.0f;
-		Vector2 mPos;
-		Vector2 mDir;
-		Color mColor = Colors::White;
+        void setRandomColor();
+
+    private:
+
+        const float mRadius = 5.0f;
+        float       mSpeed  = 300.0f;
+        Vector2     mPos;
+        Vector2     mDir;
+        Color       mColor = Colors::White;
 };
-

@@ -19,9 +19,10 @@ int Application::Run()
 {
     while ( mWindow.ProcessMessage() )
     {
-        if ( mWindow.kbd.KeyIsPressed( VK_SPACE ) )
+        if ( mBall.Pos().y > ballDeathHeightTresh )
         {
-            MessageBox( nullptr, "Something Happened!", "Space Key Was Pressed", MB_OK | MB_ICONEXCLAMATION );
+            MessageBox( nullptr, "GAME OVER", "Better luck next time!", MB_OK | MB_ICONEXCLAMATION );
+            exit( EXIT_SUCCESS );
         }
 
         DoFrame();
@@ -103,9 +104,9 @@ void Application::SetWalls( std::vector< Brick > &walls )
 
     // temporary bottom wall
 
-    Brick bottomWall( Rect( Vector2( 0, Graphics::ScreenHeight - topWallHeight ), Graphics::ScreenWidth, topWallHeight ), Colors::Blue );
-    bottomWall.SetImmortal( true );
-    mWalls.push_back( bottomWall );
+    // Brick bottomWall( Rect( Vector2( 0, Graphics::ScreenHeight - topWallHeight ), Graphics::ScreenWidth, topWallHeight ), Colors::Blue );
+    // bottomWall.SetImmortal( true );
+    // mWalls.push_back( bottomWall );
 
     // left wall
 
