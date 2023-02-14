@@ -31,6 +31,7 @@ class Application
 
         const float resetGameTime        = 1.0f;
         const float ballDeathHeightTresh = Graphics::ScreenHeight - 40.0f;
+        int         numOfBricksLeft      = 1;
 
         Window &mWindow;
         Timer   mTimer;

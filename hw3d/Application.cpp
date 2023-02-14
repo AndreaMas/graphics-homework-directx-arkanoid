@@ -25,6 +25,12 @@ int Application::Run()
             exit( EXIT_SUCCESS );
         }
 
+        if ( numOfBricksLeft < 1 )
+        {
+            MessageBox( nullptr, "YOU WON", "You've been promoted to Arkanoid master.", MB_OK | MB_ICONEXCLAMATION );
+            exit( EXIT_SUCCESS );
+        }
+
         DoFrame();
     }
 
@@ -51,7 +57,8 @@ void Application::UpdateModel()
 
     for ( Brick &brick : mBricks )
     {
-        brick.DoCollisionWithBall( mBall );
+        if ( brick.DoCollisionWithBall( mBall ) )
+            numOfBricksLeft--;
     }
 
     for ( Brick &wall : mWalls )
@@ -125,6 +132,8 @@ void Application::SetBricksInGrid( std::vector< Brick > &bricks )
 {
     const int numBricksPerRow = 5;
     const int numBricksPerCol = 3;
+
+    numOfBricksLeft = 5 * 3;
 
     const int firstBrickRowScreenHeight = Graphics::ScreenHeight / 8;
     const int PaddleScreenHeight        = Graphics::ScreenHeight * 2 / 8;
