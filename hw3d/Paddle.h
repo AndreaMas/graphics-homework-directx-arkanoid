@@ -9,33 +9,34 @@
 
 class Paddle
 {
-	public:
+    public:
 
-		Paddle(const Vector2& pos_in, float halfWidth_in, float halfHeight_in);
+        Paddle( const Vector2 &pos_in, float halfWidth_in, float halfHeight_in );
 
-		void Draw(Graphics& gfx) const;
-		bool DoBallCollision(Ball& ball);
-		void DoWallCollision(const Rect& walls);
-		void Update(const Keyboard& kbd, float dt);
-		Rect GetRect() const;
+        void Draw( Graphics &gfx ) const;
+        bool DoBallCollision( Ball &ball );
+        void Update( const Keyboard &kbd, float dt );
+        Rect GetRect() const;
 
-	private:
+    private:
 
-		Color mColor = Colors::White;
-		const float mSpeed = 360.0f;
+        Color       mColor = Colors::White;
+        const float mSpeed = 360.0f;
 
-		// add variability to ball bounce behavior
-		static constexpr float maximumExitRatio = 2.6f;
-		static constexpr float fixedZoneWidthRatio = 0.2f;
+        float mPaddleHorizontalTreshold = 30.0f;
 
-		float halfWidth;
-		float halfHeight;
+        // add variability to ball bounce behavior
+        static constexpr float maximumExitRatio    = 2.6f;
+        static constexpr float fixedZoneWidthRatio = 0.2f;
 
-		// these are derived from above controls
-		float exitXFactor;
-		float fixedZoneHalfWidth;
-		float fixedZoneExitX;
+        float halfWidth;
+        float halfHeight;
 
-		Vector2 pos;
-		//bool isCooldown = false;
+        // these are derived from above controls
+        float exitXFactor;
+        float fixedZoneHalfWidth;
+        float fixedZoneExitX;
+
+        Vector2 mPos;
+        // bool isCooldown = false;
 };
