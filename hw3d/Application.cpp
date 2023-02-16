@@ -135,8 +135,7 @@ void Application::SetBricksInGrid( std::vector< Brick > &bricks )
 
     numOfBricksLeft = 5 * 3;
 
-    const int firstBrickRowScreenHeight = Graphics::ScreenHeight / 8;
-    const int PaddleScreenHeight        = Graphics::ScreenHeight * 2 / 8;
+    const int firstBrickRowScreenHeight = Graphics::ScreenHeight * 2 / 8;
 
     const float spaceBetwBricks = 5.0f;
 
