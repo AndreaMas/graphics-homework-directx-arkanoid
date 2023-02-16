@@ -60,8 +60,14 @@ bool Brick::DoCollisionWithBall( Ball &ball )
 
         if ( !mIsImmortal )
         {
-            mIsBroken = true;
-            return true;
+            mLives--;
+            mColor.SetG( mColor.GetG() - ( unsigned char ) 50 );
+
+            if ( mLives <= 0 )
+            {
+                mIsBroken = true;
+                return true; // a brick has died
+            }
         }
     }
 

@@ -25,6 +25,7 @@ class Brick
 
         bool  mIsImmortal = false;
         bool  mIsBroken   = false;
+        int   mLives      = 3;
         Color mColor;
         Rect  mRect; // implicit position
 };
